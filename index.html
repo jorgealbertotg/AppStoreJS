@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Store</title>
+  <script src="assets/js/material.js"></script>
+  <script src="assets/js/store.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="assets/css/material.css">
+  <style>
+    body {
+      outline: 5px solid yellow;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-flow: column nowrap;
+    }
+    header {
+      background-color: #05fd05;
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+    }
+    
+    header > div > h1 {
+      font-size: 24px;
+      border: 1px solid red;
+    }
+    header > div > h2, header > nav > h2 {
+      font-size: 16px;
+      border: 1px solid red;
+    }
+    nav {
+      background-color: #fff;
+    }
+    main.loaderContainer:hover {
+      height: 100vh;
+    }
+    main.loaderContainer {
+      background-color: blue;
+      border: 5px solid #fff;
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    main:not(.loaderContainer) {
+      border: 5px solid blue;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    section {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      border: 10px solid pink;
+      overflow: hidden;
+    }
+    article {
+      height: 100%;
+      border: 4px solid #fff;
+      position: relative;
+    }
+    article > div {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(256px, 1fr));
+      justify-items: center;
+      grid-row-gap: 10px;
+    }
+    article:nth-child(1) {
+      background-color: tomato;
+    }
+    article:nth-child(2) {
+      background-color: palevioletred;
+    }
+    article:nth-child(3) {
+      background-color: mediumslateblue;
+    }
+    div.slider-theater {
+      flex-grow: 1;
+      border: 3px solid yellow;
+      position: relative;
+      transition-property: top;
+      transition-duration: 1s;
+      transition-timing-function: linear;
+      transition-delay: 0.07s;
+    }
+
+    /* Category chips */
+    
+    .mdl-chip.category {
+      --primary-category-chip: #304fff;
+      --action-category-chip: #0026ca;
+      --active-category-chip: #7b7cff;
+      border-color: var(--primary-category-chip);
+      background-color: var(--primary-category-chip);
+    }
+    .mdl-chip.category.active {
+      border-color: var(--primary-category-chip);
+      color: var(--primary-category-chip);
+    }
+    .category .mdl-chip__action {
+      color: var(--action-category-chip);
+    }
+    .mdl-chip.category:active, .mdl-chip.category:active .mdl-chip__action {
+      background-color: var(--active-category-chip);
+      color: #fff;
+    }
+
+    /* isOffer ships */
+    
+    .mdl-chip.isOffer {
+      --primary-offer-chip: #00c853;
+      --action-offer-chip: #009624;
+      --active-offer-chip: #5efc82;
+      border-color: var(--primary-offer-chip);
+      background-color: var(--primary-offer-chip);
+    }
+    .mdl-chip.isOffer.active {
+      border-color: var(--primary-offer-chip);
+      color: var(--primary-offer-chip);
+    }
+    .isOffer .mdl-chip__action {
+      color: var(--action-offer-chip);
+    }
+    .mdl-chip.isOffer:active, .mdl-chip.isOffer:active .mdl-chip__action {
+      background-color: var(--active-offer-chip);
+      color: #fff;
+    }
+
+    /* isActive ships */
+
+    .mdl-chip.isActive {
+      --primary-active-chip: #ff6d00;
+      --action-active-chip: #c43c00;
+      --active-active-chip: #ff9e40;
+      border-color: var(--primary-active-chip);
+      background-color: var(--primary-active-chip);
+    }
+    .mdl-chip.isActive.active {
+      border-color: var(--primary-active-chip);
+      color: var(--primary-active-chip);
+    }
+    .isActive .mdl-chip__action {
+      color: var(--action-active-chip);
+    }
+    .mdl-chip.isActive:active, .mdl-chip.isActive:active .mdl-chip__action {
+      background-color: var(--active-active-chip);
+      color: #fff;
+    }
+
+    /* Commons for ships */
+    
+    .mdl-chip {
+      margin: 0 1px;
+      border: 1px solid;
+      color: #fff;
+      cursor: pointer;
+    }
+    .mdl-chip.active {
+      background-color: #fff;
+    }
+
+    /* Products */
+  
+    .mdl-card {
+      width: 256px;
+      height: 256px;
+      background: url('./assets/images/image_card.jpg') center / cover;
+    }
+    .mdl-card__actions {
+      height: 52px;
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.2);
+      color: #fff;
+    }
+
+    /* Lightbox */
+
+    .lightbox-theater {
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      background-color: rgba(17, 17, 17, 0.5);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .lightbox-container {
+      background-color: #fff;
+      border: 1px solid #fff;
+      flex-grow: unset;
+      width: 70vw;
+      padding: 16px;
+    }
+
+    header > div {
+      border: 5px solid red;
+    }
+  </style>
+</head>
+<body onload="slide()">
+</body>
+</html>
