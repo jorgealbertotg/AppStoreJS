@@ -1,99 +1,4 @@
-const slider = (currentPanel = 1) => {
-
-  const getPanelOffsetTop = () => {
-    return document.querySelector(`.slider-panel:nth-child(${currentPanel})`).offsetTop
-  }
-
-  const setContainerOffsetTop = offsetTop => {
-    document.querySelector('.slider-theater').style.top = `-${offsetTop}px`
-  }
-
-  const showPanel = () => {
-    setContainerOffsetTop(getPanelOffsetTop())
-  }
-  const setBoxSizeView = () => {
-    
-  }
-  const boot = () => {
-    Array.from(document.querySelectorAll('.slider-link')).forEach((button, index) => {
-      button.addEventListener('click', () => {
-        currentPanel = index + 1
-        showPanel()
-      })
-    })
-    window.addEventListener('resize', showPanel)
-  }
-
-  boot()
-}
-
-const HTML = (() => {
-  const JSONToHTML = (object) => {
-    if (!object.tag) {
-      return document.createTextNode(object.data)
-    } else {
-      const element = document.createElement(object.tag)
-      if (object.classList) {
-        object.classList.forEach( classItem => {
-          element.classList.add(classItem)
-        })
-      }
-      if (object.child) {
-        element.appendChild(JSONToHTML(object.child))
-      }
-      if (object.children) {
-        object.children.forEach(child => {
-          element.appendChild(JSONToHTML(child))
-        })
-      }
-      if (object.attributes) {
-        Object.keys(object.attributes).forEach(attribute => {
-          element.setAttribute(attribute, object.attributes[attribute])
-        })
-      }
-      return element
-    }
-  }
-  const addToRoot = (html) => {
-    document.querySelector('body').appendChild(html)
-  }
-  const remove = (html) => {
-    html.remove()
-  }
-  const append = (parent, JSONChild) => {
-    parent.appendChild(JSONToHTML(JSONChild))
-  }
-  return {
-    JSONToHTML: JSONToHTML,
-    addToRoot: addToRoot,
-    remove: remove,
-    append: append
-  }
-})()
-
-const loader = ((HTML) => {
-  const loaderObject = {
-    tag: 'main', 
-    classList: ['loaderContainer'],
-    child: {data: 'Cargando...'}
-  }
-  const loaderHTML = HTML.JSONToHTML(loaderObject)
-
-  const show = () => {
-    HTML.addToRoot(loaderHTML)
-  }
-
-  const hide = () => {
-    HTML.remove(loaderHTML)
-  }
-
-  return {
-    show: show,
-    hide: hide
-  }
-})(HTML)
-
-const store = ((html) => {
+const store = ((html, productsBag) => {
   const headerObject = {
     tag: 'header',
     children: [
@@ -102,27 +7,21 @@ const store = ((html) => {
         children: [
           {
             tag: 'h1',
-            child: {data: 'Tienda de Tolentino'}
+            child: { data: 'Tienda de Tolentino' }
           },
           {
             tag: 'h2',
-            child: {data: 'Productos que ofrecemos'}
+            child: { data: 'Productos que ofrecemos' }
           }
         ]
       },
       {
-        tag: 'div',
-        child: {
-          tag: 'a',
-          child: {data: 'Productos seleccionados'}
-        }
-      },
-      {
         tag: 'nav',
+        classList: ['slider-link1'],
         children: [
           {
             tag: 'h2',
-            child: {data: 'Seleccione las categorias que buscas'}
+            child: { data: 'Seleccione las categorias que buscas' }
           },
           {
             tag: 'span',
@@ -130,8 +29,8 @@ const store = ((html) => {
             child: {
               tag: 'span',
               classList: ['mdl-chip__text'],
-              child: {data: 'Hombre'},
-              attributes: {name: 'hombre'}
+              child: { data: 'Hombre' },
+              attributes: { name: 'hombre' }
             }
           },
           {
@@ -140,8 +39,8 @@ const store = ((html) => {
             child: {
               tag: 'span',
               classList: ['mdl-chip__text'],
-              child: {data: 'Mujer'},
-              attributes: {name: 'mujer'}
+              child: { data: 'Mujer' },
+              attributes: { name: 'mujer' }
             }
           },
           {
@@ -150,8 +49,8 @@ const store = ((html) => {
             child: {
               tag: 'span',
               classList: ['mdl-chip__text'],
-              child: {data: 'Jovenes'},
-              attributes: {name: 'joven'}
+              child: { data: 'Jovenes' },
+              attributes: { name: 'joven' }
             }
           },
           {
@@ -160,8 +59,8 @@ const store = ((html) => {
             child: {
               tag: 'span',
               classList: ['mdl-chip__text'],
-              child: {data: 'Oferta'},
-              attributes: {name: 'isOffer'}
+              child: { data: 'Oferta' },
+              attributes: { name: 'isOffer' }
             }
           },
           {
@@ -170,8 +69,8 @@ const store = ((html) => {
             child: {
               tag: 'span',
               classList: ['mdl-chip__text'],
-              child: {data: 'Agotado'},
-              attributes: {name: 'isSoldOut'}
+              child: { data: 'Agotado' },
+              attributes: { name: 'isSoldOut' }
             }
           },
           {
@@ -180,8 +79,8 @@ const store = ((html) => {
             child: {
               tag: 'span',
               classList: ['mdl-chip__text'],
-              child: {data: 'Disponible'},
-              attributes: {name: 'isForSale'}
+              child: { data: 'Disponible' },
+              attributes: { name: 'isForSale' }
             }
           }
         ]
@@ -190,43 +89,103 @@ const store = ((html) => {
   }
   const mainObject = {
     tag: 'main',
-    child: {
-      tag: 'section',
-      classList: ['slider-container'],
-      child: {
-        tag: 'div',
-        classList: ['slider-theater'],
+    children: [
+      {
+        tag: 'nav',
+        classList: ['tabs'],
         children: [
           {
-            tag: 'article',
-            classList: ['slider-panel'],
-            children: [
-              {
-                tag: 'header',
-                child: {
-                  tag: 'p',
-                  children: [
-                    {data: 'Productos: '},
-                    {tag: 'span', data: '0'}
-                  ]
-                }
+            tag: 'a',
+            classList: ['slider-link', 'slide-products', 'active'],
+            child: { data: 'Productos' }
+          },
+          {
+            tag: 'a',
+            classList: ['slider-link', 'slide-stored-products'],
+            child: {
+              tag: 'span',
+              classList: ['mdl-badge'],
+              attributes: {
+                'data-badge': productsBag.getProductsCount()
               },
-              {
-                tag: 'div'
-              }
-            ]
+              child: { data: 'Productos comprados' }
+            }
           },
           {
-            tag: 'article',
-            classList: ['slider-panel']
-          },
-          {
-            tag: 'article',
-            classList: ['slider-panel']
+            tag: 'a',
+            classList: ['slider-link', 'slide-statistic'],
+            child: { data: 'Detalle de cuenta' }
           }
         ]
+      },
+      {
+        tag: 'section',
+        classList: ['slider-container'],
+        child: {
+          tag: 'div',
+          classList: ['slider-theater'],
+          children: [
+            {
+              tag: 'article',
+              classList: ['slider-panel'],
+              children: [
+                {
+                  tag: 'header',
+                  child: {
+                    tag: 'p',
+                    children: [
+                      { data: 'Productos: ' },
+                      { tag: 'span', data: '0' }
+                    ]
+                  }
+                },
+                {
+                  tag: 'div'
+                }
+              ]
+            },
+            {
+              tag: 'article',
+              classList: ['slider-panel'],
+              children: [
+                {
+                  tag: 'header',
+                  child: {
+                    tag: 'p',
+                    children: [
+                      { data: 'Productos: ' },
+                      { tag: 'span', data: '0' }
+                    ]
+                  }
+                },
+                {
+                  tag: 'div'
+                }
+              ]
+            },
+            {
+              tag: 'article',
+              classList: ['slider-panel'],
+              children: [
+                {
+                  tag: 'header',
+                  child: {
+                    tag: 'p',
+                    children: [
+                      { data: 'Productos: ' },
+                      { tag: 'span', data: '0' }
+                    ]
+                  }
+                },
+                {
+                  tag: 'div'
+                }
+              ]
+            }
+          ]
+        }
       }
-    }
+    ]
   }
   const build = () => {
     const headerHTML = html.JSONToHTML(headerObject)
@@ -237,232 +196,15 @@ const store = ((html) => {
   return {
     build: build
   }
-})(HTML)
+})(HTML, productsBag)
 
-const chips = () => {
-  document.querySelectorAll('.mdl-chip__text').forEach(chip => {
-    chip.addEventListener('click', () => {
-      const buttonJSON = {
-        tag: 'button',
-        classList: ['mdl-chip__action'],
-        attributes: {
-          type: 'button'
-        },
-        child: {
-          tag: 'i',
-          classList: ['material-icons'],
-          child: {data: 'cancel'}
-        }
-      }
-      if (!chip.nextElementSibling) {
-        chip.parentElement.classList.toggle('active')
-        filters.addElementByName(chip.getAttribute('name'))
-        drawProducts()
-        const buttonHTML = HTML.JSONToHTML(buttonJSON)
-        buttonHTML.addEventListener('click', () => {
-          buttonHTML.remove()
-          chip.parentElement.classList.toggle('active')
-          filters.removeElement(chip.getAttribute('name'))
-          drawProducts()
-        })
-        chip.parentElement.appendChild(buttonHTML)
-      }
-    })
-  })
-}
-
-const lightBox = ((html) => {
-  let lightBoxHTML
-  const lightBoxObject = (headerContent, content, footerContent) => {
-    return {
-      tag: 'div',
-      classList: ['lightbox-theater'],
-      child: {
-        tag: 'section',
-        classList: ['lightbox-container'],
-        children: [
-          {
-            tag: 'header',
-            classList: ['lightbox-header'],
-            child: headerContent
-          },
-          {
-            tag: 'div',
-            classList: ['lightbox-content'],
-            child: content
-          },
-          {
-            tag: 'footer',
-            classList: ['lightbox-footer'],
-            child: footerContent
-          }
-        ]
-      }
-    }
-  }
-  const show = (header, content, footer) => {
-    lightBoxHTML = html.JSONToHTML(lightBoxObject(header,content,footer))
-    html.addToRoot(lightBoxHTML)
-    document.querySelector('body').style.overflow = 'hidden'
-  }
-  const close = () => {
-    lightBoxHTML.remove()
-    document.querySelector('body').style.overflow = 'auto'
-  }
-  return {
-    show: show,
-    close: close
-  }
-})(HTML)
-
-const productsBag = (() => {
-  const products = []
-  const addProduct = product => {
-    products.push(product)
-  }
-  const removeProduct = productPosition => {
-    products.splice(productPosition, 1)
-  }
-  const getProducts = () => {
-    return products
-  }
-  return {
-    add: addProduct,
-    remove: removeProduct,
-    getProducts: getProducts
-  }
-})()
-const buildProducts = ((html, lb) => {
-  let itemsCount = 0;
-
-  const filterData = (data, filters) => {
-    return data.filter(item => {
-      if (filters.includes('hombre') ||
-      filters.includes('mujer') ||
-      filters.includes('joven')) {
-        if (filters.includes(item.category)) {
-          return true
-        }
-      } else {
-        return true
-      }
-    }).filter(item => {
-      if (filters.includes('isOffer')) {
-        if(item.isOffer) {
-          return true
-        }
-      }
-      else {
-        return true
-      }
-    }).filter(item => {
-      if (filters.includes('isSoldOut') || filters.includes('isForSale')) {
-        if(filters.includes('isSoldOut') && !item.isActive) {
-          return true
-        }
-        if(filters.includes('isForSale') && item.isActive) {
-          return true
-        }
-      } else {
-        return true
-      }
-    })
-  }
-
-  const build = (data, filters,container) => {
-    const filteredData = filterData(data, filters)
-    itemsCount = filteredData.length
-    filteredData.forEach((item, index) => {
-      const productObject = {
-        tag: 'div',
-        classList: ['mdl-card', 'mdl-shadow--8dp'],
-        attributes: {
-          name: index
-        },
-        children: [
-          {
-            tag: 'div',
-            classList: ['mdl-card__title', 'mdl-card--expand']
-          },
-          {
-            tag: 'div',
-            classList: ['mdl-card__actions'],
-            child: {
-              tag: 'span',
-              child: {data: item.name}
-            }
-          }
-        ]
-      }
-      const productHTML = html.JSONToHTML(productObject)
-      productHTML.addEventListener('click', () => {
-        const header = {
-          tag: 'p',
-          children: [
-            {data: item.name},
-            {
-              tag: 'span',
-              child: {data: item.price}
-            }
-          ]
-        }
-        const content = {
-          tag: 'div',
-          children: [
-            {
-              tag: 'h3',
-              child: {data: 'Acerca del producto'}
-            },
-            {
-              tag: 'p',
-              child: {data: item.about}
-            }
-          ]
-        }
-        const footer = {
-          tag: 'div',
-          children: [
-            {
-              tag: 'button',
-              classList: ['mdl-button', 'mdl-js-button', 'mdl-button--raised', 'mdl-js-ripple-effect', 'mdl-button--colored', 'mdl-close'],
-              child: {data: 'button1'}
-            },
-            {
-              tag: 'button',
-              classList: ['mdl-button', 'mdl-js-button', 'mdl-button--raised', 'mdl-js-ripple-effect', 'mdl-button--accent', 'mdl-accept'],
-              child: {data: 'button2'}
-            }
-          ]
-        }
-        lb.show(header, content, footer)
-        document.querySelector('.mdl-close').addEventListener('click', () => {
-          lb.close()
-        })
-        document.querySelector('.mdl-accept').addEventListener('click', () => {
-          lb.close()
-          productsBag.add(filteredData[index])
-          console.log(productsBag.getProducts())
-        })
-      })
-      container.appendChild(productHTML)
-    })
-  }
-  const getItemsCount = () => {
-    return itemsCount;
-  }
-  return {
-    build: build,
-    getItemsCount: getItemsCount
-  }
-})(HTML, lightBox)
-
-const filters = (() => {
+const filters = () => {
   const filters = []
   const addElement = elementName => {
     filters.push(elementName)
   }
   const removeElement = elementName => {
-    filters.splice(filters.indexOf(elementName),1)
+    filters.splice(filters.indexOf(elementName), 1)
   }
   const addElementByName = (elementName) => {
     if (!filters.includes(elementName)) {
@@ -474,37 +216,127 @@ const filters = (() => {
     removeElement: removeElement,
     getFilters: () => filters
   }
-})()
+}
 
 const BagData = (() => {
   let data = []
   return {
-    setData: d => {data = d},
+    setData: d => { data = d },
     getData: () => data
   }
 })()
 
-const slide = () => {
+const boot = () => {
   loader.show()
-  setTimeout(()=>{
-    loader.hide()
-    store.build()
-    slider()
-    chips()
-  const data = fetch('http://demo6292426.mockable.io/products')
-  .then(response => response.json())
-  .then(data => {
-    BagData.setData(data)
-    drawProducts()
-  });
-  
-  },1000)
+  /*
+  fetch('http://slowwly.robertomurray.co.uk/delay/3000/url/http://demo6292426.mockable.io/products')
+  */
+  fetch('http://demo6292426.mockable.io/products').then(response => response.json())
+    .then(data => {
+      BagData.setData(data)
+      loader.hide()
+      store.build()
+      drawProducts()
+      chips.boot(mainFilters, drawProducts)
+      document.querySelector('a.slide-stored-products').addEventListener('click', async e => {
+        const response = await resolveStoredProductsTab(e)
+        if (response) {
+          activeTab(document.querySelector('a.slide-stored-products'), 2, drawBagProducts)
+          chips.updateChipStatus()
+        }
+      })
+      document.querySelector('a.slide-products').addEventListener('click', async e => {
+        const response = await resolveProductsTab(e)
+        if (response) {
+          activeTab(document.querySelector('a.slide-products'), 1, drawProducts)
+          chips.updateChipStatus()
+        }
+      })
+      document.querySelector('a.slide-statistic').addEventListener('click', async e => {
+        const response = await resolveStatisticsTab(e)
+        if (response) {
+          activeTab(document.querySelector('a.slide-statistic'), 3, drawStatistics)
+        }
+      })
+    })
 }
+const activeTab = (target, panel, cb) => {
+  setTabAnchorActive(target)
+  cb()
+  slider.show(panel)
+}
+const resolveStoredProductsTab = (e) => {
+  return new Promise(resolve => {
+    if (productsBag.getProducts().length) {
+      if (!e.target.classList.contains('active')) {
+        resolve(true)
+      }
+    }
+  })
+}
+const resolveProductsTab = (e) => {
+  return new Promise(resolve => {
+    if (!e.target.classList.contains('active')) {
+      resolve(true)
+    }
+  })
+}
+const resolveStatisticsTab = (e) => {
+  return new Promise(resolve => {
+    if (!e.target.classList.contains('active')) {
+      resolve(true)
+    }
+  })
+}
+const setTabAnchorActive = (target) => {
+  document.querySelector('a.active').classList.remove('active')
+  target.classList.add('active')
+}
+const mainFilters = (() => {
+  return filters()
+})()
+
+const storeFilters = (() => {
+  return filters()
+})()
 
 const drawProducts = () => {
   document.querySelector('article.slider-panel:nth-child(1) div').innerHTML = ''
-  buildProducts.build(BagData.getData(), 
-    filters.getFilters(), 
+  chips.reboot(mainFilters, drawProducts)
+  buildProducts.build(BagData.getData(),
+    mainFilters,
     document.querySelector('article.slider-panel:nth-child(1) div'))
   document.querySelector('article.slider-panel:nth-child(1) header p span').innerText = buildProducts.getItemsCount()
+}
+
+const drawBagProducts = () => {
+  document.querySelector('article.slider-panel:nth-child(2) div').innerHTML = ''
+  chips.reboot(storeFilters, drawBagProducts)
+  buildProducts.build(productsBag.getProducts(),
+    storeFilters,
+    document.querySelector('article.slider-panel:nth-child(2) div'))
+  document.querySelector('article.slider-panel:nth-child(2) header p span').innerText = buildProducts.getItemsCount()
+}
+
+const showProducts = (panelNumber, products, filters, cb) => {
+  const panel = `article.slider-panel:nth-child(${panelNumber})`
+  document.querySelector(`${panel} div`).innerHTML = ''
+  chips.reboot(filters, cb)
+  buildProducts.build(products, filters, document.querySelector(`${panel} div`))
+  document.querySelector(`${panel} header p span`).innerText = buildProducts.getItemsCount()
+}
+
+const drawStatistics = () => {
+  document.querySelector('article.slider-panel:nth-child(3) div').innerHTML = ''
+  const total = productsBag.getProducts().reduce((total, product) => {
+    total += HTML.currencyToNumber(buildProducts.getLastPrice(product))
+    return total
+  }, 0)
+  const statisticContainerObject = {
+    tag: 'p',
+    child: { data: `Total a pagar: ${HTML.numberToCurrency(total)}` }
+  }
+  const statisticContainerObjectHTML = HTML.JSONToHTML(statisticContainerObject)
+  document.querySelector('article.slider-panel:nth-child(3) div').appendChild(statisticContainerObjectHTML)
+  document.querySelector('article.slider-panel:nth-child(3) header p span').innerText = productsBag.getProductsCount()
 }
