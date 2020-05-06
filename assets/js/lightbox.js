@@ -29,6 +29,7 @@ const lightBox = ((html) => {
   }
   const show = (header, content, footer) => {
     lightBoxHTML = html.JSONToHTML(lightBoxObject(header, content, footer))
+    lightBoxHTML.style.top = `${window.scrollY}px`
     html.addToRoot(lightBoxHTML)
     document.querySelector('body').style.overflow = 'hidden'
   }

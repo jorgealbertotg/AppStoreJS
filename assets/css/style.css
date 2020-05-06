@@ -211,8 +211,6 @@ div.slider-theater {
   width           : 100vw;
   height          : 100vh;
   position        : absolute;
-  top             : 0;
-  left            : 0;
   background-color: rgba(17, 17, 17, 0.5);
   z-index         : 10;
   display         : flex;

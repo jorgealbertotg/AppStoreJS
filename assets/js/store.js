@@ -268,11 +268,11 @@ const activeTab = (target, panel, cb) => {
 }
 const resolveStoredProductsTab = (e) => {
   return new Promise(resolve => {
-    if (productsBag.getProducts().length) {
+    //if (productsBag.getProducts().length) {
       if (!e.target.classList.contains('active')) {
         resolve(true)
       }
-    }
+    //}
   })
 }
 const resolveProductsTab = (e) => {
@@ -315,7 +315,17 @@ const drawProducts = () => {
 const drawBagProducts = () => {
   chips.reboot(storeFilters, drawBagProducts)
   const data = buildProducts.build(productsBag.getProducts(), storeFilters)
-  restartPanel(2, data)
+  if (productsBag.getProductsCount() > 0) {
+    restartPanel(2, data)
+  } else {
+    const content = {
+      tag: 'p',
+      children: [
+        { data: 'No hay productos para mostrar' }
+      ]
+    }
+    restartPanel(2, HTML.JSONToHTML(content))
+  }
   setProductsCount(2, buildProducts.getItemsCount())
   if (document.querySelector('article:nth-child(2) .mdl-card .mdl-chip__action')) {
     bootCloseButtons()
