@@ -35,12 +35,12 @@ const HTML = (() => {
     parent.appendChild(JSONToHTML(JSONChild))
   }
   const currencyToNumber = (stringCurrency) => {
-    return parseFloat(stringCurrency.slice(1).replace(',', ''))
+    return parseFloat(stringCurrency.slice(1).replace(',', '')).toFixed(2)
   }
   const numberToCurrency = (numberCurrency) => {
-    let num = numberCurrency.toString()
+    let num = parseFloat(numberCurrency).toFixed(2).toString()
     num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g, '$1,')
-    num = num.split('').reverse().join('').replace(/^[.]/, '')
+    num = num.split('').reverse().join('').replace(/^[\.]/, '')
     return `$${num}`
   }
   return {

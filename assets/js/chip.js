@@ -4,12 +4,10 @@ const chips = (() => {
   const boot = (f, cb) => {
     filters = f
     callback = cb
-    console.log(document.querySelectorAll('.mdl-chip__text'))
     document.querySelectorAll('.mdl-chip__text').forEach(chip => {
       chip.addEventListener('click', () => {
         if (!chip.nextElementSibling) {
           chip.parentElement.classList.toggle('active')
-          console.log(filters)
           filters.addElementByName(chip.getAttribute('name'))
           callback()
           addCloseButton(chip)
@@ -37,7 +35,17 @@ const chips = (() => {
     chip.parentElement.appendChild(getCloseButton(chip))
   }
   const getCloseButton = chip => {
-    const buttonJSON = {
+    const buttonHTML = getCloseButtonHTML()
+    buttonHTML.addEventListener('click', () => {
+      buttonHTML.remove()
+      chip.parentElement.classList.toggle('active')
+      filters.removeElement(chip.getAttribute('name'))
+      callback()
+    })
+    return buttonHTML
+  }
+  const getCloseButtonObject = () => {
+    return {
       tag: 'button',
       classList: ['mdl-chip__action'],
       attributes: {
@@ -49,14 +57,10 @@ const chips = (() => {
         child: { data: 'cancel' }
       }
     }
-    const buttonHTML = HTML.JSONToHTML(buttonJSON)
-    buttonHTML.addEventListener('click', () => {
-      buttonHTML.remove()
-      chip.parentElement.classList.toggle('active')
-      filters.removeElement(chip.getAttribute('name'))
-      callback()
-    })
-    return buttonHTML
+  }
+  const getCloseButtonHTML = () => {
+    const buttonJSON = getCloseButtonObject()
+    return HTML.JSONToHTML(buttonJSON)
   }
   const reboot = (f, cb) => {
     filters = f
@@ -65,6 +69,8 @@ const chips = (() => {
   return {
     boot: boot,
     reboot: reboot,
-    updateChipStatus: updateChipStatus
+    updateChipStatus: updateChipStatus,
+    getCloseButtonHTML: getCloseButtonHTML,
+    getCloseButtonObject: getCloseButtonObject
   }
 })()

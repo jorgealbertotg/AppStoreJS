@@ -48,6 +48,7 @@ const buildProducts = ((html, lb, productsBag) => {
         name: index
       },
       children: [
+        chips.getCloseButtonObject(),
         {
           tag: 'div',
           classList: ['mdl-card__title', 'mdl-card--expand'],
@@ -90,6 +91,7 @@ const buildProducts = ((html, lb, productsBag) => {
         name: index
       },
       children: [
+        chips.getCloseButtonObject(),
         {
           tag: 'div',
           classList: ['mdl-card__title', 'mdl-card--expand'],
@@ -126,6 +128,7 @@ const buildProducts = ((html, lb, productsBag) => {
         name: index
       },
       children: [
+        chips.getCloseButtonObject(),
         {
           tag: 'div',
           classList: ['mdl-card__title', 'mdl-card--expand'],
@@ -178,7 +181,7 @@ const buildProducts = ((html, lb, productsBag) => {
   const build = (data, filters, container) => {
     const filteredData = filterData(data, filters)
     itemsCount = filteredData.length
-    filteredData.forEach((item, index) => {
+    return filteredData.reduce((container, item, index) => {
       const type = item.isActive ? item.isOffer ? 'offer' : 'normal' : 'soldout'
       const productHTML = html.JSONToHTML(getProductObject(type, item, index))
       productHTML.addEventListener('click', () => {
@@ -226,16 +229,20 @@ const buildProducts = ((html, lb, productsBag) => {
           ]
         }
         lb.show(header, content, footer)
-        document.querySelector('.mdl-close').addEventListener('click', () => {
-          lb.close()
-        })
-        document.querySelector('.mdl-accept').addEventListener('click', () => {
-          lb.close()
-          productsBag.add(filteredData[index])
-          document.querySelector('.mdl-badge').setAttribute('data-badge', productsBag.getProductsCount())
-        })
+        bootEvents(filteredData[index])
       })
       container.appendChild(productHTML)
+      return container
+    }, document.createElement('div'))
+  }
+  const bootEvents = product => {
+    document.querySelector('.mdl-close').addEventListener('click', () => {
+      lb.close()
+    })
+    document.querySelector('.mdl-accept').addEventListener('click', () => {
+      lb.close()
+      productsBag.add(product)
+      document.querySelector('.mdl-badge').setAttribute('data-badge', productsBag.getProductsCount())
     })
   }
   const isDisabled = (productId) => {
@@ -261,6 +268,7 @@ const buildProducts = ((html, lb, productsBag) => {
     build: build,
     getItemsCount: getItemsCount,
     getLastPrice: getLastPrice,
-    getCurrentPrice: getCurrentPrice
+    getCurrentPrice: getCurrentPrice,
+    filterData: filterData
   }
 })(HTML, lightBox, productsBag)

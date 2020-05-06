@@ -66,14 +66,25 @@ article {
   position        : relative;
 }
 
-article>div {
+article>div>div {
   display              : grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   justify-items        : center;
   grid-row-gap         : 10px;
   grid-column-gap      : 10px;
 }
-
+table {
+  margin: auto;
+}
+article .mdl-chip__action {
+  display: none;
+}
+article:nth-child(2) .mdl-card:hover .mdl-chip__action {
+  display: block;
+  position: absolute;
+  right: 8px;
+  color: #ff0000;
+}
 article:nth-child(2) {
   display: none;
 }
