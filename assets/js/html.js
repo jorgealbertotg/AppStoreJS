@@ -1,4 +1,5 @@
 const HTML = (() => {
+
   const JSONToHTML = (object) => {
     if (!object.tag) {
       return document.createTextNode(object.data)
@@ -25,24 +26,30 @@ const HTML = (() => {
       return element
     }
   }
+
   const addToRoot = (html) => {
     document.querySelector('body').appendChild(html)
   }
+
   const remove = (html) => {
     html.remove()
   }
+
   const append = (parent, JSONChild) => {
     parent.appendChild(JSONToHTML(JSONChild))
   }
+
   const currencyToNumber = (stringCurrency) => {
     return parseFloat(stringCurrency.slice(1).replace(',', '')).toFixed(2)
   }
+
   const numberToCurrency = (numberCurrency) => {
     let num = parseFloat(numberCurrency).toFixed(2).toString()
     num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g, '$1,')
     num = num.split('').reverse().join('').replace(/^[\.]/, '')
     return `$${num}`
   }
+
   return {
     JSONToHTML: JSONToHTML,
     addToRoot: addToRoot,

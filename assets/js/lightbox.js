@@ -1,5 +1,6 @@
 const lightBox = ((html) => {
   let lightBoxHTML
+
   const lightBoxObject = (headerContent, content, footerContent) => {
     return {
       tag: 'div',
@@ -27,16 +28,19 @@ const lightBox = ((html) => {
       }
     }
   }
+
   const show = (header, content, footer) => {
     lightBoxHTML = html.JSONToHTML(lightBoxObject(header, content, footer))
     lightBoxHTML.style.top = `${window.scrollY}px`
     html.addToRoot(lightBoxHTML)
     document.querySelector('body').style.overflow = 'hidden'
   }
+
   const close = () => {
     lightBoxHTML.remove()
     document.querySelector('body').style.overflow = 'auto'
   }
+
   return {
     show: show,
     close: close

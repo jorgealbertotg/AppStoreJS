@@ -1,6 +1,7 @@
 const chips = (() => {
   let filters
   let callback
+
   const boot = (f, cb) => {
     filters = f
     callback = cb
@@ -16,6 +17,7 @@ const chips = (() => {
       })
     })
   }
+
   const updateChipStatus = () => {
     document.querySelectorAll('.mdl-chip__text').forEach(chip => {
       if (filters.getFilters().includes(chip.getAttribute('name'))) {
@@ -31,9 +33,11 @@ const chips = (() => {
       }
     })
   }
+
   const addCloseButton = (chip) => {
     chip.parentElement.appendChild(getCloseButton(chip))
   }
+
   const getCloseButton = chip => {
     const buttonHTML = getCloseButtonHTML()
     buttonHTML.addEventListener('click', () => {
@@ -44,6 +48,7 @@ const chips = (() => {
     })
     return buttonHTML
   }
+
   const getCloseButtonObject = () => {
     return {
       tag: 'button',
@@ -58,14 +63,17 @@ const chips = (() => {
       }
     }
   }
+
   const getCloseButtonHTML = () => {
     const buttonJSON = getCloseButtonObject()
     return HTML.JSONToHTML(buttonJSON)
   }
+
   const reboot = (f, cb) => {
     filters = f
     callback = cb
   }
+
   return {
     boot: boot,
     reboot: reboot,

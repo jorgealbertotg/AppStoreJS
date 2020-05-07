@@ -1,4 +1,5 @@
 const loader = ((HTML) => {
+  let loaderHTML
   const loaderObject = {
     tag: 'main',
     classList: ['loaderContainer'],
@@ -7,9 +8,9 @@ const loader = ((HTML) => {
       classList: ['loader']
     }
   }
-  const loaderHTML = HTML.JSONToHTML(loaderObject)
 
   const show = () => {
+    loaderHTML = HTML.JSONToHTML(loaderObject)
     HTML.addToRoot(loaderHTML)
   }
 

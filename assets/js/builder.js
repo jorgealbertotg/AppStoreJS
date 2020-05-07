@@ -1,4 +1,4 @@
-const buildProducts = ((html, lb, productsBag) => {
+const buildProducts = ((html, lb, productsBag, chips) => {
   let itemsCount = 0
 
   const filterData = (data, f) => {
@@ -34,12 +34,42 @@ const buildProducts = ((html, lb, productsBag) => {
       }
     })
   }
+
   const getMin = (v1, v2) => {
     return Math.min(html.currencyToNumber(v1), html.currencyToNumber(v2))
   }
+
   const getMax = (v1, v2) => {
     return Math.max(html.currencyToNumber(v1), html.currencyToNumber(v2))
   }
+
+  const getActionsObject = name => {
+    return {
+      tag: 'div',
+      classList: ['mdl-card__actions'],
+      child: {
+        tag: 'span',
+        child: { data: name }
+      }
+    }
+  }
+
+  const getPricesObject = item => {
+    return {
+      tag: 'p',
+      children: [
+        {
+          tag: 'span',
+          child: { data: getCurrentPrice(item) }
+        },
+        {
+          tag: 'span',
+          child: { data: getLastPrice(item) }
+        }
+      ]
+    }
+  }
+
   const getSoldOutObject = (item, index) => {
     return {
       tag: 'div',
@@ -57,32 +87,14 @@ const buildProducts = ((html, lb, productsBag) => {
               tag: 'p',
               child: { data: 'No disponible' }
             },
-            {
-              tag: 'p',
-              children: [
-                {
-                  tag: 'span',
-                  child: { data: getCurrentPrice(item) }
-                },
-                {
-                  tag: 'span',
-                  child: { data: getLastPrice(item) }
-                }
-              ]
-            }
+            getPricesObject(item)
           ]
         },
-        {
-          tag: 'div',
-          classList: ['mdl-card__actions'],
-          child: {
-            tag: 'span',
-            child: { data: item.name }
-          }
-        }
+        getActionsObject(item.name)
       ]
     }
   }
+
   const getOfferObject = (item, index) => {
     return {
       tag: 'div',
@@ -95,31 +107,13 @@ const buildProducts = ((html, lb, productsBag) => {
         {
           tag: 'div',
           classList: ['mdl-card__title', 'mdl-card--expand'],
-          child: {
-            tag: 'p',
-            children: [
-              {
-                tag: 'span',
-                child: { data: getCurrentPrice(item) }
-              },
-              {
-                tag: 'span',
-                child: { data: getLastPrice(item) }
-              }
-            ]
-          }
+          child: getPricesObject(item)
         },
-        {
-          tag: 'div',
-          classList: ['mdl-card__actions'],
-          child: {
-            tag: 'span',
-            child: { data: item.name }
-          }
-        }
+        getActionsObject(item.name)
       ]
     }
   }
+
   const getNormalObject = (item, index) => {
     return {
       tag: 'div',
@@ -132,31 +126,13 @@ const buildProducts = ((html, lb, productsBag) => {
         {
           tag: 'div',
           classList: ['mdl-card__title', 'mdl-card--expand'],
-          child: {
-            tag: 'p',
-            children: [
-              {
-                tag: 'span',
-                child: { data: getCurrentPrice(item) }
-              },
-              {
-                tag: 'span',
-                child: { data: getLastPrice(item) }
-              }
-            ]
-          }
+          child: getPricesObject(item)
         },
-        {
-          tag: 'div',
-          classList: ['mdl-card__actions'],
-          child: {
-            tag: 'span',
-            child: { data: item.name }
-          }
-        }
+        getActionsObject(item.name)
       ]
     }
   }
+
   const getProductObject = (type, item, index) => {
     let productObject
     switch (type) {
@@ -172,12 +148,15 @@ const buildProducts = ((html, lb, productsBag) => {
     }
     return productObject
   }
+
   const getCurrentPrice = item => {
     return html.numberToCurrency(getMax(item.price, item.comparativePrice))
   }
+
   const getLastPrice = item => {
     return html.numberToCurrency(getMin(item.price, item.comparativePrice))
   }
+
   const build = (data, filters, container) => {
     const filteredData = filterData(data, filters)
     itemsCount = filteredData.length
@@ -235,6 +214,7 @@ const buildProducts = ((html, lb, productsBag) => {
       return container
     }, document.createElement('div'))
   }
+
   const bootEvents = product => {
     document.querySelector('.mdl-close').addEventListener('click', () => {
       lb.close()
@@ -245,12 +225,14 @@ const buildProducts = ((html, lb, productsBag) => {
       document.querySelector('.mdl-badge').setAttribute('data-badge', productsBag.getProductsCount())
     })
   }
+
   const isDisabled = (productId) => {
     if (productExist(productId)) {
       return { disabled: true }
     }
     return {}
   }
+
   const productExist = productId => {
     if (productsBag.getProducts().length) {
       for (let i = 0; i < productsBag.getProducts().length; i++) {
@@ -261,9 +243,11 @@ const buildProducts = ((html, lb, productsBag) => {
     }
     return false
   }
+
   const getItemsCount = () => {
     return itemsCount
   }
+
   return {
     build: build,
     getItemsCount: getItemsCount,
@@ -271,4 +255,4 @@ const buildProducts = ((html, lb, productsBag) => {
     getCurrentPrice: getCurrentPrice,
     filterData: filterData
   }
-})(HTML, lightBox, productsBag)
+})(HTML, lightBox, storedProductsBag, chips)
