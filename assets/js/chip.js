@@ -1,4 +1,7 @@
-const chips = (() => {
+import { HTML } from './html.js'
+import { Slider } from './slider.js'
+
+export const Chip = ((HTML, slider) => {
   let filters
   let callback
 
@@ -81,4 +84,4 @@ const chips = (() => {
     getCloseButtonHTML: getCloseButtonHTML,
     getCloseButtonObject: getCloseButtonObject
   }
-})()
+})(HTML, Slider)

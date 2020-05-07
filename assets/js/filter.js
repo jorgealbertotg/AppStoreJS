@@ -22,14 +22,14 @@ const filters = () => {
   }
 }
 
-const mainFilters = (() => {
+export const MainFilters = (() => {
   return filters()
 })()
 
-const storeFilters = (() => {
+export const StoreFilters = (() => {
   return filters()
 })()
 
-const detailFilters = (() => {
+export const DetailFilters = (() => {
   return filters()
 })()

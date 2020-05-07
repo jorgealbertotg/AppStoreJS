@@ -1,3 +1,11 @@
+import { Loader } from './loader.js'
+import { HTML } from './html.js'
+import { Builder } from './builder.js'
+import { Chip } from './chip.js'
+import { StoredProductsBag, ProductsBag } from './databag.js'
+import { MainFilters, StoreFilters, DetailFilters } from './filter.js'
+import { Slider } from './slider.js'
+
 const store = ((html, storedProductsBag, productsBag, buildProducts, chips, mainFilters, storeFilters, detailFilters, slider) => {
   const headerObject = {
     tag: 'header',
@@ -351,17 +359,18 @@ const store = ((html, storedProductsBag, productsBag, buildProducts, chips, main
     bootMenu: bootMenu,
     drawProducts: drawProducts
   }
-})(HTML, storedProductsBag, productsBag, buildProducts, chips, mainFilters, storeFilters, detailFilters, slider)
+})(HTML, StoredProductsBag, ProductsBag, Builder, Chip, MainFilters, StoreFilters, DetailFilters, Slider)
 
 const boot = () => {
-  loader.show()
+  Loader.show()
   fetch('http://slowwly.robertomurray.co.uk/delay/3000/url/http://demo6292426.mockable.io/products')
     .then(response => response.json())
     .then(data => {
-      loader.hide()
-      productsBag.setProducts(data)
+      Loader.hide()
+      ProductsBag.setProducts(data)
       store.build()
-      slider.boot()
+      Slider.boot()
       store.bootMenu()
     })
 }
+document.addEventListener('DOMContentLoaded', boot)

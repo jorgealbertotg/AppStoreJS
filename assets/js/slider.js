@@ -1,4 +1,4 @@
-const slider = ((cp = 1) => {
+export const Slider = ((cp = 1) => {
   let currentPanel = cp
 
   const showPanel = () => {

@@ -1,5 +1,4 @@
-const HTML = (() => {
-
+export const HTML = (() => {
   const JSONToHTML = (object) => {
     if (!object.tag) {
       return document.createTextNode(object.data)

@@ -1,4 +1,9 @@
-const buildProducts = ((html, lb, productsBag, chips) => {
+import { HTML } from './html.js'
+import { Lightbox } from './lightbox.js'
+import { Chip } from './chip.js'
+import { StoredProductsBag } from './databag.js'
+
+export const Builder = ((html, lb, productsBag, chips) => {
   let itemsCount = 0
 
   const filterData = (data, f) => {
@@ -255,4 +260,4 @@ const buildProducts = ((html, lb, productsBag, chips) => {
     getCurrentPrice: getCurrentPrice,
     filterData: filterData
   }
-})(HTML, lightBox, storedProductsBag, chips)
+})(HTML, Lightbox, StoredProductsBag, Chip)

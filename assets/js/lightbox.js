@@ -1,4 +1,6 @@
-const lightBox = ((html) => {
+import { HTML } from './html.js'
+
+export const Lightbox = ((html) => {
   let lightBoxHTML
 
   const lightBoxObject = (headerContent, content, footerContent) => {

@@ -1,4 +1,6 @@
-const loader = ((HTML) => {
+import { HTML } from './html.js'
+
+export const Loader = ((HTML) => {
   let loaderHTML
   const loaderObject = {
     tag: 'main',

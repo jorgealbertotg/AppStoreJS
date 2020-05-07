@@ -29,5 +29,5 @@ const dataBag = () => {
     setProducts: setProducts
   }
 }
-const productsBag = dataBag()
-const storedProductsBag = dataBag()
+export const ProductsBag = dataBag()
+export const StoredProductsBag = dataBag()
